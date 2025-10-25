@@ -10,7 +10,6 @@ const AdminDashboard = () => {
   const [editingClient, setEditingClient] = useState(null);
   const [clients, setClients] = useState([]);
 
-  // Buscar clientes
   const fetchClients = async () => {
     try {
       const res = await api.get('/api/clients');
@@ -24,25 +23,25 @@ const AdminDashboard = () => {
     fetchClients();
   }, []);
 
-  // Abrir modal para criar
+
   const handleCreate = () => {
     setEditingClient(null);
     setShowModal(true);
   };
 
-  // Abrir modal para editar
+
   const handleEdit = (client) => {
     setEditingClient(client);
     setShowModal(true);
   };
 
-  // Fechar modal e atualizar lista
+  
   const handleClose = () => {
     setShowModal(false);
     fetchClients();
   };
 
-  // Deletar cliente
+  
   const handleDelete = async (clientId) => {
     if (window.confirm('Tem certeza que deseja deletar este cliente?')) {
       try {

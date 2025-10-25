@@ -1,4 +1,3 @@
-import React from 'react';
 import { Navbar as BSNavbar, Container, Nav, Button } from 'react-bootstrap';
 import { logout, getRole } from '../utils/auth';
 import { useNavigate } from 'react-router-dom';

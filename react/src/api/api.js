@@ -4,7 +4,6 @@ const api = axios.create({
   baseURL: 'http://localhost:8080',
 });
 
-// Intercepta requisições e adiciona o token JWT
 api.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -13,7 +12,6 @@ api.interceptors.request.use(config => {
   return config;
 });
 
-// Função auxiliar para tentar renovar o token
 async function refreshJwtToken() {
   try {
     const refreshToken = localStorage.getItem('refreshToken');
@@ -32,13 +30,11 @@ async function refreshJwtToken() {
   }
 }
 
-// Intercepta respostas com erro (ex: token expirado)
 api.interceptors.response.use(
   response => response,
   async error => {
     const originalRequest = error.config;
 
-    // Se o token expirou (401) e ainda não tentamos atualizar
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
@@ -46,11 +42,11 @@ api.interceptors.response.use(
       if (newToken) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
         originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
-        return api(originalRequest); // Reenvia a requisição com o novo token
+        return api(originalRequest); 
       } else {
         localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
-        window.location.href = '/login'; // Redireciona o usuário para login
+        window.location.href = '/login'; 
       }
     }
 

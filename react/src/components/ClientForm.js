@@ -14,7 +14,6 @@ const ClientForm = ({ client, onClose }) => {
   const [uf, setUf] = useState('');
   const [complemento, setComplemento] = useState('');
 
-  // Preenche os campos se o cliente já existir
   useEffect(() => {
     if (client) {
       setName(client.name);
@@ -30,10 +29,9 @@ const ClientForm = ({ client, onClose }) => {
     }
   }, [client]);
 
-  // Preenche automaticamente os campos de endereço ao digitar o CEP
   useEffect(() => {
     const timer = setTimeout(async () => {
-      const cepOnlyNumbers = cep.replace(/\D/g, ''); // remove máscara
+      const cepOnlyNumbers = cep.replace(/\D/g, ''); 
 
       if (cepOnlyNumbers.length === 8) {
         try {
@@ -48,7 +46,6 @@ const ClientForm = ({ client, onClose }) => {
           console.error('Erro ao buscar CEP:', err);
         }
       } else if (cepOnlyNumbers.length === 0) {
-        // limpa campos se apagar tudo
         setLogradouro('');
         setBairro('');
         setLocalidade('');
@@ -60,7 +57,7 @@ const ClientForm = ({ client, onClose }) => {
     return () => clearTimeout(timer);
   }, [cep]);
 
-  // Telefone
+  
   const handlePhoneChange = (index, field, value) => {
     const updated = [...phones];
     updated[index][field] = value;
@@ -69,7 +66,7 @@ const ClientForm = ({ client, onClose }) => {
   const addPhone = () => setPhones([...phones, { number: '', type: 'CELULAR' }]);
   const removePhone = (index) => setPhones(phones.filter((_, i) => i !== index));
 
-  // Email
+ 
   const handleEmailChange = (index, value) => {
     const updated = [...emails];
     updated[index] = value;
@@ -78,7 +75,7 @@ const ClientForm = ({ client, onClose }) => {
   const addEmail = () => setEmails([...emails, '']);
   const removeEmail = (index) => setEmails(emails.filter((_, i) => i !== index));
 
-  // Envio do formulário
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
