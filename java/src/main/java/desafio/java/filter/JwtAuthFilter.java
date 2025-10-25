@@ -3,7 +3,6 @@ package desafio.java.filter;
 import desafio.java.service.JwtService;
 import desafio.java.service.UserService;
 import io.jsonwebtoken.ExpiredJwtException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -19,11 +18,14 @@ import java.io.IOException;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    @Autowired
     private JwtService jwtService;
 
-    @Autowired
     private UserService userService;
+
+    public JwtAuthFilter(JwtService jwtService, UserService userService) {
+        this.jwtService = jwtService;
+        this.userService = userService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -45,11 +47,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         try {
             username = jwtService.extractUsername(jwt);
         } catch (ExpiredJwtException e) {
-            logger.warn("⚠️ Token expirado: " + e.getMessage());
+            logger.warn("Token expirado: " + e.getMessage());
             filterChain.doFilter(request, response);
             return;
         } catch (Exception e) {
-            logger.warn("❌ Erro ao processar token: " + e.getMessage());
+            logger.warn("Erro ao processar token: " + e.getMessage());
             filterChain.doFilter(request, response);
             return;
         }

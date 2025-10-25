@@ -34,15 +34,13 @@ public class ClientController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<ClientResponseDTO> getById(@PathVariable Long id) {
-        ClientResponseDTO dto = service.findById(id);
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.ok(service.findById(id));
     }
 
     @GetMapping
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<List<ClientResponseDTO>> getAll() {
-        List<ClientResponseDTO> clients = service.findAll();
-        return ResponseEntity.ok(clients);
+        return ResponseEntity.ok(service.findAll());
     }
 
 
@@ -50,8 +48,7 @@ public class ClientController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ClientResponseDTO> update(@PathVariable Long id,
                                                     @Valid @RequestBody ClientRequestDTO dto) {
-        ClientResponseDTO updated = service.update(id, dto);
-        return ResponseEntity.ok(updated);
+        return ResponseEntity.ok(service.update(id, dto));
     }
 
     @DeleteMapping("/{id}")

@@ -21,20 +21,20 @@ import java.util.stream.Collectors;
 @Service
 public class ClientService {
 
-    @Autowired
     private ClientRepository clientRepository;
 
-    @Autowired
     private ClientMapper clientMapper;
 
-    @Autowired
     private AddressService addressService;
 
 
     public ClientService(ClientRepository clientRepository, ClientMapper clientMapper, AddressRepository addressRepository, PhoneRepository phoneRepository, EmailRepository emailRepository) {
         this.clientRepository = clientRepository;
         this.clientMapper = clientMapper;
+        this.addressService = new AddressService(addressRepository);
     }
+
+    private static final String CLIENT_NOT_FOUND = "Cliente não encontrado com ID: ";
 
     public ClientResponseDTO create(ClientRequestDTO dto) {
 
@@ -93,13 +93,13 @@ public class ClientService {
 
     public ClientResponseDTO findById(Long id) {
         ClientEntity client = clientRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado com ID: " + id));
+                .orElseThrow(() -> new EntityNotFoundException(CLIENT_NOT_FOUND + id));
         return clientMapper.mapToResponseDTO(client);
     }
 
     public ClientResponseDTO update(Long id, ClientRequestDTO dto) {
         ClientEntity client = clientRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado com ID: " + id));
+                .orElseThrow(() -> new EntityNotFoundException(CLIENT_NOT_FOUND + id));
 
         if (dto.getName() != null) {
             client.setName(dto.getName());
@@ -165,7 +165,7 @@ public class ClientService {
 
     public void delete(Long id) {
         ClientEntity client = clientRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado com ID: " + id));
+                .orElseThrow(() -> new EntityNotFoundException(CLIENT_NOT_FOUND + id));
         clientRepository.delete(client);
     }
 

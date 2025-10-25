@@ -17,11 +17,13 @@ public class AddressService {
         this.addressRepository = addressRepository;
     }
 
+    private static final String URL_API = "https://viacep.com.br/ws/";
+
     public AddressResponseDTO create(AddressDTO dto) {
 
         String cepLimpo = dto.getCep().replaceAll("\\D", "");
 
-        String url = "https://viacep.com.br/ws/" + cepLimpo + "/json/";
+        String url = URL_API + cepLimpo + "/json/";
         AddressResponseDTO viaCep = restTemplate.getForObject(url, AddressResponseDTO.class);
 
         if (dto.getLogradouro() != null) viaCep.setLogradouro(dto.getLogradouro());
@@ -53,9 +55,9 @@ public class AddressService {
         return response;
     }
 
-    public AddressResponseDTO fetchFromCep(AddressDTO dto) {
-        String cepLimpo = dto.getCep().replaceAll("\\D", "");
-        String url = "https://viacep.com.br/ws/" + cepLimpo + "/json/";
+    public AddressResponseDTO fetchFromCep(String cep) {
+        String cepLimpo = cep.replaceAll("\\D", "");
+        String url = URL_API + cepLimpo + "/json/";
         return restTemplate.getForObject(url, AddressResponseDTO.class);
     }
 

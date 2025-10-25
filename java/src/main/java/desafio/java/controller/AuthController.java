@@ -2,12 +2,8 @@ package desafio.java.controller;
 
 import desafio.java.service.JwtService;
 import desafio.java.service.UserService;
-import lombok.var;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,21 +14,22 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
     private AuthenticationManager authenticationManager;
-    @Autowired
+
     private JwtService jwtService;
-    @Autowired
+
     private UserService userService;
+
+    public AuthController(AuthenticationManager authenticationManager, JwtService jwtService, UserService userService){
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
+        this.userService = userService;
+    }
 
     @PostMapping("/login")
     public Map<String, String> login(@RequestBody Map<String, String> loginData) {
         String username = loginData.get("username");
         String password = loginData.get("password");
-
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password)
-        );
 
         UserDetails user = userService.loadUserByUsername(username);
         String role = user.getAuthorities().iterator().next().getAuthority();

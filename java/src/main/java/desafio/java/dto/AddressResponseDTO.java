@@ -1,6 +1,6 @@
 package desafio.java.dto;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AddressResponseDTO {
 
     private String cep;
@@ -28,5 +29,6 @@ public class AddressResponseDTO {
         }
         return cep;
     }
+
 
 }
